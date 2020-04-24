@@ -50,19 +50,38 @@ const mandarinData = {
     
   })
   
-  // Mandarin translator click event
+  // Mandarin translator click event w/ limited dictionary
+  // document.querySelector("#language-container").addEventListener("click", function(){
+  //   if(event.target.id === "translate-btn-mandarin"){
+  
+  //     const toBeTranslatedValue = document.querySelector("#text-area").value.toLowerCase()
+  
+  //     const translatedPhrase = mandarinData.dictionary[translate()]
+  
+  //     if (translatedPhrase !== undefined){
+  //       document.querySelector("#translator-container").innerHTML += buildTranslatedPhraseContainer(toBeTranslatedValue, translatedPhrase)
+
+  //       textToSpeechFunction(mandarinData.name, toBeTranslatedValue, translatedPhrase)
+  //     }
+  //   }
+  // })
+
+
+  //Translator click event with API
   document.querySelector("#language-container").addEventListener("click", function(){
     if(event.target.id === "translate-btn-mandarin"){
-  
       const toBeTranslatedValue = document.querySelector("#text-area").value.toLowerCase()
   
-      const translatedPhrase = mandarinData.dictionary[translate()]
-  
-      if (translatedPhrase !== undefined){
-        document.querySelector("#translator-container").innerHTML += buildTranslatedPhraseContainer(toBeTranslatedValue, translatedPhrase)
-
-        textToSpeechFunction(mandarinData.name, toBeTranslatedValue, translatedPhrase)
+      if(toBeTranslatedValue !== ""){
+        apiFetch.getAll(toBeTranslatedValue, "en", "zh")
       }
-    }
+      else{
+        const translatedPhrase = "I'm sorry, the phrase you entered is not in our dictionary! Please, try another phrase :)"
+        speechSynthesis.speak(new SpeechSynthesisUtterance(translatedPhrase))
+        document.querySelector("#translator-container").innerHTML += `
+        <p>${translatedPhrase}</p>`
+      }
+  
+      }
   })
 

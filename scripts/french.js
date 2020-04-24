@@ -59,20 +59,38 @@ document.querySelector("#french").addEventListener("click", function(){
 
 })
 
-// French translator click event
+// French translator click event with limited dictionary
+// document.querySelector("#language-container").addEventListener("click", function(){
+//   if(event.target.id === "translate-btn-french"){
+
+//     const toBeTranslatedValue = document.querySelector("#text-area").value.toLowerCase()
+
+//     const translatedPhrase = frenchData.dictionary[translate()]
+
+//     if (translatedPhrase !== undefined){
+//       document.querySelector("#translator-container").innerHTML += buildTranslatedPhraseContainer(toBeTranslatedValue, translatedPhrase)
+
+//       textToSpeechFunction(frenchData.name, toBeTranslatedValue, translatedPhrase)
+//     }
+//   }
+// })
+
+//Translator using API
 document.querySelector("#language-container").addEventListener("click", function(){
   if(event.target.id === "translate-btn-french"){
-
     const toBeTranslatedValue = document.querySelector("#text-area").value.toLowerCase()
 
-    const translatedPhrase = frenchData.dictionary[translate()]
-
-    if (translatedPhrase !== undefined){
-      document.querySelector("#translator-container").innerHTML += buildTranslatedPhraseContainer(toBeTranslatedValue, translatedPhrase)
-
-      textToSpeechFunction(frenchData.name, toBeTranslatedValue, translatedPhrase)
+    if(toBeTranslatedValue !== ""){
+      apiFetch.getAll(toBeTranslatedValue, "en", "fr")
     }
-  }
+    else{
+      const translatedPhrase = "I'm sorry, the phrase you entered is not in our dictionary! Please, try another phrase :)"
+      speechSynthesis.speak(new SpeechSynthesisUtterance(translatedPhrase))
+      document.querySelector("#translator-container").innerHTML += `
+      <p>${translatedPhrase}</p>`
+    }
+
+    }
 })
 
 // Navbar Home button click event
